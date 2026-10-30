@@ -4,7 +4,7 @@ const skillCategories = [
   {
     title: 'AI Engineering',
     color: '#7c3aed',
-    skills: ['LLM Applications', 'Prompt Engineering', 'RAG Pipelines', 'NLP', 'Model Deployment'],
+    skills: ['RAG Pipelines', 'Hybrid Search & Reranking', 'LLM Evaluation (faithfulness, relevance)', 'Prompt Engineering', 'NLP'],
   },
   {
     title: 'Data Engineering',
@@ -36,6 +36,7 @@ const skillCategories = [
 const allTools = [
   'Python', 'SQL', 'Pandas', 'NumPy', 'PySpark',
   'Scikit-learn', 'TensorFlow', 'NLP', 'LLMs', 'RAG',
+  'Hugging Face', 'LangChain', 'ChromaDB', 'Vector Search',
   'Apache Spark', 'Airflow', 'ETL', 'Docker', 'MLflow',
   'AWS S3', 'AWS Lambda', 'EC2', 'FastAPI', 'Streamlit',
   'Tableau', 'Power BI', 'Git', 'CI/CD', 'Prompt Engineering',
@@ -45,13 +46,13 @@ export default function Skills() {
   const [hovered, setHovered] = useState(null);
 
   return (
-    <section id="skills" style={{ padding: '80px 40px', maxWidth: '1100px', margin: '0 auto' }}>
+    <section id="skills" style={{ padding: '80px clamp(20px, 5vw, 40px)', maxWidth: '1100px', margin: '0 auto' }}>
       <div className="section-label">Expertise</div>
       <div className="section-heading">Skills</div>
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
         gap: '16px',
         marginBottom: '48px',
       }}>

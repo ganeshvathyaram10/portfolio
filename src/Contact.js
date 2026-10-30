@@ -10,15 +10,15 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" style={{ padding: '80px 40px', maxWidth: '1100px', margin: '0 auto' }}>
+    <section id="contact" style={{ padding: '80px clamp(20px, 5vw, 40px)', maxWidth: '1100px', margin: '0 auto' }}>
       <div className="section-label">Get in Touch</div>
       <div className="section-heading">Contact</div>
 
       <div style={{
         background: '#111118', border: '1px solid #1a1a2e',
-        borderRadius: '24px', padding: '64px 48px', textAlign: 'center',
+        borderRadius: '24px', padding: 'clamp(40px, 8vw, 64px) clamp(20px, 5vw, 48px)', textAlign: 'center',
       }}>
-        <div className="gradient-text" style={{ fontSize: '48px', fontWeight: 700, marginBottom: '16px' }}>
+        <div className="gradient-text" style={{ fontSize: 'clamp(32px, 7vw, 48px)', fontWeight: 700, marginBottom: '16px' }}>
           Let's build something
         </div>
         <p style={{ fontSize: '16px', color: '#9ca3af', maxWidth: '480px', margin: '0 auto 48px', lineHeight: 1.8 }}>
@@ -61,7 +61,7 @@ export default function Contact() {
       </div>
 
       <div style={{ textAlign: 'center', marginTop: '48px', color: '#374151', fontSize: '13px' }}>
-        Built with React · Deployed on Netlify · Ganesh Vathyaram 2025
+        Built with React · Deployed on Netlify · Ganesh Vathyaram 2026
       </div>
     </section>
   );

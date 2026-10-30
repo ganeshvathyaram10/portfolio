@@ -2,6 +2,17 @@ import React, { useState } from 'react';
 
 const projects = [
   {
+    icon: '🔎',
+    title: 'Enterprise Document RAG Assistant',
+    description: 'Question answering over internal documents with cited answers. Hybrid retrieval (dense + BM25 fused with RRF), cross-encoder reranking, and abstention when evidence is weak. Ships with an eval harness for retrieval, correctness, and faithfulness: 15 of 16 answerable questions correct, 3 of 3 unanswerable correctly refused, p95 latency 1.7s.',
+    tags: ['RAG', 'Hugging Face', 'ChromaDB', 'LangChain', 'FastAPI', 'Docker', 'LLM Evaluation'],
+    link: null,
+    github: 'https://github.com/ganeshvathyaram10/enterprise-rag-assistant',
+    color: '#312e81',
+    metric: '0.87 faithfulness',
+    featured: true,
+  },
+  {
     icon: '🩺',
     title: 'CGM Glucose Predictor',
     description: 'Predicts blood glucose 30 minutes ahead using 48 engineered features from CGM time-series data. Achieves MAE = 2.39 mg/dL and R² = 0.986 — clinically safe predictions.',
@@ -16,7 +27,7 @@ const projects = [
     title: 'Stock Price Pipeline',
     description: 'Real-time ETL pipeline ingesting live stock prices from Alpha Vantage API, storing in SQLite, engineering 17 features, and predicting next-day price direction.',
     tags: ['ETL', 'SQLite', 'REST API', 'Random Forest', 'Finance'],
-    link: 'https://cgm-glucose-predictor-ml.streamlit.app',
+    link: null,
     github: 'https://github.com/ganeshvathyaram10/stock-pipeline',
     color: '#14532d',
     metric: 'Live pipeline',
@@ -47,13 +58,13 @@ export default function Projects() {
   const [hovered, setHovered] = useState(null);
 
   return (
-    <section id="projects" style={{ padding: '80px 40px', maxWidth: '1100px', margin: '0 auto' }}>
+    <section id="projects" style={{ padding: '80px clamp(20px, 5vw, 40px)', maxWidth: '1100px', margin: '0 auto' }}>
       <div className="section-label">Portfolio</div>
       <div className="section-heading">Projects</div>
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(480px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))',
         gap: '20px',
       }}>
         {projects.map((p, i) => (
@@ -68,7 +79,7 @@ export default function Projects() {
               padding: '28px',
               transition: 'all 0.3s ease',
               transform: hovered === i ? 'translateY(-4px)' : 'none',
-              cursor: 'pointer',
+              gridColumn: p.featured ? '1 / -1' : 'auto',
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
@@ -96,6 +107,11 @@ export default function Projects() {
               </span>
             </div>
 
+            {p.featured && (
+              <div style={{ fontSize: '11px', color: '#ec4899', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: '6px' }}>
+                Featured
+              </div>
+            )}
             <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>{p.title}</h3>
             <p style={{ fontSize: '14px', color: '#9ca3af', lineHeight: 1.7, marginBottom: '20px' }}>{p.description}</p>
 
@@ -114,7 +130,7 @@ export default function Projects() {
             </div>
 
             <div style={{ display: 'flex', gap: '12px' }}>
-              <a href={p.link} target="_blank" rel="noreferrer" style={{
+              {p.link && <a href={p.link} target="_blank" rel="noreferrer" style={{
                 background: 'linear-gradient(135deg, #7c3aed, #db2777)',
                 color: '#fff',
                 padding: '8px 20px',
@@ -123,7 +139,7 @@ export default function Projects() {
                 fontWeight: 500,
               }}>
                 Live Demo
-              </a>
+              </a>}
               <a href={p.github} target="_blank" rel="noreferrer" style={{
                 background: 'transparent',
                 color: '#9ca3af',

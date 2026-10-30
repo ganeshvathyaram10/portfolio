@@ -43,7 +43,7 @@ export default function Hero() {
       alignItems: 'center',
       justifyContent: 'center',
       textAlign: 'center',
-      padding: '120px 40px 80px',
+      padding: '120px 24px 80px',
     }}>
       <div style={{
         display: 'inline-block',
@@ -58,12 +58,12 @@ export default function Hero() {
         Open to AI & Data Engineer roles
       </div>
 
-      <h1 style={{ fontSize: '56px', fontWeight: 700, lineHeight: 1.1, marginBottom: '16px' }}>
+      <h1 style={{ fontSize: 'clamp(36px, 8vw, 56px)', fontWeight: 700, lineHeight: 1.1, marginBottom: '16px' }}>
         Hi, I'm{' '}
         <span className="gradient-text">Ganesh Vathyaram</span>
       </h1>
 
-      <h2 style={{ fontSize: '28px', fontWeight: 400, color: '#9ca3af', marginBottom: '24px', minHeight: '40px' }}>
+      <h2 style={{ fontSize: 'clamp(22px, 5vw, 28px)', fontWeight: 400, color: '#9ca3af', marginBottom: '24px', minHeight: '40px' }}>
         <span className="gradient-text" style={{ fontWeight: 600 }}>{displayed}</span>
         <span style={{ borderRight: '2px solid #a78bfa', marginLeft: '2px', animation: 'blink 1s infinite' }} />
       </h2>
@@ -76,7 +76,8 @@ export default function Hero() {
         marginBottom: '40px',
       }}>
         I build intelligent systems — from LLM-powered applications and
-        real-time data pipelines to predictive ML models deployed at scale.
+        retrieval systems with measurable evaluation to real-time data
+        pipelines and predictive ML models.
         Turning raw data into decisions that matter.
       </p>
 
@@ -113,10 +114,10 @@ export default function Hero() {
         justifyContent: 'center',
       }}>
         {[
-          { num: '4', label: 'Projects shipped' },
+          { num: '5', label: 'Projects shipped' },
           { num: '0.986', label: 'Best model R²' },
           { num: '25K+', label: 'Data points processed' },
-          { num: '4', label: 'Live deployments' },
+          { num: '3', label: 'Live demos' },
         ].map(({ num, label }) => (
           <div key={label} style={{ textAlign: 'center' }}>
             <div className="gradient-text" style={{ fontSize: '32px', fontWeight: 700 }}>{num}</div>

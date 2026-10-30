@@ -47,5 +47,12 @@ a {
   .section {
     padding: 60px 20px;
   }
+  .nav-links {
+    display: none !important;
+  }
+  .section-heading {
+    font-size: 26px;
+    margin-bottom: 32px;
+  }
 }
 
