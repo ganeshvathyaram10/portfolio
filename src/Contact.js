@@ -4,7 +4,7 @@ export default function Contact() {
   const [copied, setCopied] = useState(false);
 
   const copyEmail = () => {
-    navigator.clipboard.writeText('vathyaramganesh@gmail.com');
+    navigator.clipboard.writeText('ganesh.vathyaram06@gmail.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -48,8 +48,9 @@ export default function Contact() {
           flexWrap: 'wrap', paddingTop: '32px', borderTop: '1px solid #1a1a2e',
         }}>
           {[
-            { label: 'Email', value: 'vathyaramganesh@gmail.com' },
-            { label: 'Location', value: 'Open to remote and relocation' },
+            { label: 'Email', value: 'ganesh.vathyaram06@gmail.com' },
+            { label: 'Phone', value: '+1 (667) 481-9025' },
+            { label: 'Location', value: 'Maryland · open to relocation' },
             { label: 'Status', value: 'Actively looking' },
           ].map(({ label, value }) => (
             <div key={label} style={{ textAlign: 'center' }}>

@@ -37,6 +37,10 @@ a {
   margin-bottom: 8px;
 }
 
+.role-meta {
+  text-align: right;
+}
+
 .section-heading {
   font-size: 32px;
   font-weight: 700;
@@ -49,6 +53,9 @@ a {
   }
   .nav-links {
     display: none !important;
+  }
+  .role-meta {
+    text-align: left;
   }
   .section-heading {
     font-size: 26px;

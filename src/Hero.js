@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 
 const roles = [
-  'AI Engineer',
-  'Data Engineer',
-  'ML Engineer',
-  'LLM Developer',
+  'AI/ML Engineer',
+  'Forward Deployed AI Engineer',
+  'Machine Learning Engineer',
+  'LLM & RAG Systems',
 ];
 
 export default function Hero() {
@@ -93,7 +93,7 @@ export default function Hero() {
         }}>
           View Projects
         </a>
-        <a href="mailto:vathyaramganesh@gmail.com" style={{
+        <a href="mailto:ganesh.vathyaram06@gmail.com" style={{
           background: 'transparent',
           color: '#f0f0f5',
           border: '1px solid #2d2d4e',
