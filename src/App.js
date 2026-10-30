@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import { profile, experience, featuredProject, projects, skills, education } from './content';
+import Ask from './Ask';
+import { slug } from './search';
 
 function initials(name) {
   return name.split(' ').map(p => p[0]).join('').slice(0, 2);
+}
+
+function readTheme() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+  } catch (e) { /* storage unavailable */ }
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 function Portrait() {
@@ -12,12 +22,7 @@ function Portrait() {
     return <div className="portrait portrait-fallback" aria-hidden="true">{initials(profile.name)}</div>;
   }
   return (
-    <img
-      className="portrait"
-      src={profile.photo}
-      alt={`Portrait of ${profile.name}`}
-      onError={() => setFailed(true)}
-    />
+    <img className="portrait" src={profile.photo} alt={`Portrait of ${profile.name}`} onError={() => setFailed(true)} />
   );
 }
 
@@ -34,19 +39,66 @@ function ExtLink({ href, children, className }) {
   return <a className={className} href={href} target="_blank" rel="noreferrer">{children}</a>;
 }
 
+function CopyEmail() {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (e) {
+      window.location.href = `mailto:${profile.email}`;
+    }
+  };
+  return (
+    <button type="button" className="btn" onClick={copy}>
+      <span aria-live="polite">{copied ? 'Copied' : 'Copy email'}</span>
+    </button>
+  );
+}
+
 export default function App() {
+  const [theme, setTheme] = useState(readTheme);
+  const [filter, setFilter] = useState(null);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem('theme', theme); } catch (e) { /* ignore */ }
+  }, [theme]);
+
+  const allTags = useMemo(() => {
+    const set = new Set([...featuredProject.stack, ...projects.flatMap(p => p.stack)]);
+    return [...set];
+  }, []);
+
+  const matches = p => !filter || p.stack.includes(filter);
+  const showFeatured = matches(featuredProject);
+  const visible = projects.filter(matches);
+  const count = visible.length + (showFeatured ? 1 : 0);
+
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
       <header className="topbar">
         <div className="wrap topbar-inner">
           <a className="mark" href="#top">{profile.name}</a>
-          <nav aria-label="Sections" className="topnav">
-            <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
-            <a href="#skills">Skills</a>
-            <a href="#contact">Contact</a>
-          </nav>
+          <div className="topbar-right">
+            <nav aria-label="Sections" className="topnav">
+              <a href="#ask">Ask</a>
+              <a href="#experience">Experience</a>
+              <a href="#projects">Projects</a>
+              <a href="#skills">Skills</a>
+              <a href="#contact">Contact</a>
+            </nav>
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {theme === 'dark' ? 'Light' : 'Dark'}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -66,10 +118,14 @@ export default function App() {
           <Portrait />
         </div>
 
+        <Section id="ask" title="Ask">
+          <Ask onBeforeReveal={() => setFilter(null)} />
+        </Section>
+
         <Section id="experience" title="Experience">
           <ol className="timeline">
             {experience.map(job => (
-              <li key={job.company} className="job">
+              <li key={job.company} id={`job-${slug(job.company)}`} className="job">
                 <div className="job-dates">{job.dates}</div>
                 <div>
                   <h3 className="job-role">{job.role}</h3>
@@ -86,29 +142,43 @@ export default function App() {
         </Section>
 
         <Section id="projects" title="Projects">
-          <article className="featured">
-            <h3 className="featured-title">{featuredProject.title}</h3>
-            <p className="prose">{featuredProject.description}</p>
-            <table className="results">
-              <caption>{featuredProject.evalNote}</caption>
-              <tbody>
-                {featuredProject.results.map(r => (
-                  <tr key={r.metric}>
-                    <th scope="row">{r.metric}</th>
-                    <td>{r.value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="stack">{featuredProject.stack.join(', ')}</p>
-            <div className="links">
-              <ExtLink href={featuredProject.github}>View code on GitHub</ExtLink>
-            </div>
-          </article>
+          <div className="filter" role="group" aria-label="Filter projects by technology">
+            <button type="button" className="chip" aria-pressed={!filter} onClick={() => setFilter(null)}>All</button>
+            {allTags.map(t => (
+              <button key={t} type="button" className="chip" aria-pressed={filter === t} onClick={() => setFilter(filter === t ? null : t)}>
+                {t}
+              </button>
+            ))}
+          </div>
+          <p className="filter-status" aria-live="polite">
+            {filter ? `${count} ${count === 1 ? 'project uses' : 'projects use'} ${filter}` : `${count} projects`}
+          </p>
+
+          {showFeatured && (
+            <article className="featured" id={`project-${slug(featuredProject.title)}`}>
+              <h3 className="featured-title">{featuredProject.title}</h3>
+              <p className="prose">{featuredProject.description}</p>
+              <table className="results">
+                <caption>{featuredProject.evalNote}</caption>
+                <tbody>
+                  {featuredProject.results.map(r => (
+                    <tr key={r.metric}>
+                      <th scope="row">{r.metric}</th>
+                      <td>{r.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="stack">{featuredProject.stack.join(', ')}</p>
+              <div className="links">
+                <ExtLink href={featuredProject.github}>View code on GitHub</ExtLink>
+              </div>
+            </article>
+          )}
 
           <ul className="project-list">
-            {projects.map(p => (
-              <li key={p.title} className="project">
+            {visible.map(p => (
+              <li key={p.title} id={`project-${slug(p.title)}`} className="project">
                 <h3 className="project-title">{p.title}</h3>
                 <p className="prose">{p.description}</p>
                 {p.result && <p className="project-result">{p.result}</p>}
@@ -151,6 +221,7 @@ export default function App() {
             I'm open to AI and machine learning engineering roles. The quickest way to reach me is email.
           </p>
           <a className="contact-email" href={`mailto:${profile.email}`}>{profile.email}</a>
+          <div className="actions contact-actions"><CopyEmail /></div>
           <dl className="contact-list">
             <div><dt>Phone</dt><dd><a href={profile.phoneHref}>{profile.phone}</a></dd></div>
             <div><dt>LinkedIn</dt><dd><ExtLink href={profile.linkedin}>linkedin.com/in/ganeshvathyaram</ExtLink></dd></div>
