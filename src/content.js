@@ -3,7 +3,7 @@
 export const profile = {
   name: 'Ganesh Vathyaram',
   title: 'AI/ML Engineer',
-  location: 'College Park, Maryland',
+  location: 'California',
   summary:
     'AI/ML engineer with 4+ years of experience building generative AI, agentic AI, RAG, machine learning, and MLOps systems for supply chain and fintech. I have built multi-agent systems, a supply chain digital twin, fraud detection models, and real-time ML pipelines.',
   email: 'ganesh.vathyaram06@gmail.com',
