@@ -3,9 +3,9 @@
 export const profile = {
   name: 'Ganesh Vathyaram',
   title: 'AI/ML Engineer',
-  location: 'Maryland',
+  location: 'College Park, Maryland',
   summary:
-    'I build machine learning and LLM systems that hold up in production: retrieval pipelines with cited answers, measurable evaluation, and models deployed behind clean APIs.',
+    'AI/ML engineer with 4+ years of experience building generative AI, agentic AI, RAG, machine learning, and MLOps systems for supply chain and fintech. I have built multi-agent systems, a supply chain digital twin, fraud detection models, and real-time ML pipelines.',
   email: 'ganesh.vathyaram06@gmail.com',
   phone: '+1 (667) 481-9025',
   phoneHref: 'tel:+16674819025',
@@ -21,16 +21,30 @@ export const experience = [
   {
     role: 'Forward Deployed AI Engineer',
     company: 'Palantir Technologies',
-    location: 'California',
-    dates: 'Oct 2025 – Present',
-    highlights: [],
+    location: 'New York',
+    dates: 'Apr 2025 – Present',
+    highlights: [
+      'Embedded with supply chain and logistics leaders at a Fortune 100 home-improvement retailer to build a supply chain digital twin on Palantir Foundry and AIP, turning 35+ planner workflows into KPI-driven delivery milestones.',
+      'Built PySpark and SQL pipelines integrating SAP ERP, WMS, TMS, and Snowflake through Data Connection, REST APIs, and Apache Kafka, processing 70M+ records daily across 1,500+ locations.',
+      'Designed an ontology of 60+ object, link, and action types and wrote TypeScript functions to automate replenishment decisions, reducing manual planner adjustments by 45%.',
+      'Developed multi-agent LLM workflows in AIP Agent Studio and LangGraph on Claude, using MCP tool calling and RAG with hybrid search and NeMo Retriever reranking, reaching 91% accuracy on LLM-as-judge evaluations against a golden dataset.',
+      'Integrated NVIDIA cuOpt route optimization with XGBoost forecasting, improving forecast MAPE to 15% and truckload utilization by 8%.',
+      'Shipped Workshop and OSDK (React) apps with human-in-the-loop approvals, NeMo Guardrails for PII redaction, and LangSmith tracing, deployed through Apollo CI/CD to 300+ planners in 8 weeks and cutting stockout response time to 6 hours.',
+    ],
   },
   {
     role: 'Machine Learning Engineer',
     company: 'Razorpay',
     location: 'India',
     dates: 'Aug 2021 – Jul 2024',
-    highlights: [],
+    highlights: [
+      'Built a production fraud detection system with PySpark, XGBoost, LightGBM, and SHAP, engineering 150+ behavioral features across 90M+ monthly transactions, achieving 94% precision and preventing 1.2M in annual fraud losses.',
+      'Developed real-time feature engineering and ML pipelines with Airflow, AWS EMR, Kafka, and Feast, using SMOTE and threshold optimization to improve fraud recall by 18% at under 1% fraud prevalence.',
+      'Fine-tuned DistilBERT with Hugging Face Transformers on payment descriptions and merchant metadata, reaching 89% accuracy and reducing manual review volume by 37% through champion/challenger deployment.',
+      'Served real-time inference with FastAPI, Docker, Amazon EKS, Kubernetes HPA, Redis, and SageMaker, holding 50 ms p95 latency at peak load with Prometheus and Grafana monitoring.',
+      'Implemented model monitoring, drift detection, and automated rollback with MLflow, Evidently, KS-test, and PSI, reducing degradation detection time by 40%.',
+      'Automated MLOps and CI/CD with Terraform and the MLflow Model Registry, shortening release cycles from weeks to 2 days.',
+    ],
   },
 ];
 
@@ -89,11 +103,12 @@ export const projects = [
 ];
 
 export const skills = [
-  { group: 'AI and LLMs', items: ['Retrieval-augmented generation', 'Hybrid search and reranking', 'LLM evaluation', 'Prompt engineering', 'NLP', 'Hugging Face', 'LangChain'] },
-  { group: 'Machine learning', items: ['scikit-learn', 'TensorFlow', 'Time-series forecasting', 'Feature engineering', 'Model evaluation'] },
-  { group: 'Data engineering', items: ['ETL pipelines', 'Apache Spark', 'PySpark', 'Airflow', 'SQL', 'ChromaDB'] },
-  { group: 'Deployment and cloud', items: ['FastAPI', 'Docker', 'AWS (S3, Lambda, EC2)', 'MLflow', 'CI/CD', 'Streamlit'] },
-  { group: 'Languages and tools', items: ['Python', 'SQL', 'Pandas', 'NumPy', 'Git', 'Tableau', 'Power BI'] },
+  { group: 'Generative AI and NLP', items: ['Multi-agent systems', 'LangGraph', 'RAG and vector embeddings', 'MCP tool calling', 'LLM evaluation (LLM-as-judge)', 'NeMo Retriever and Guardrails', 'LangSmith', 'Fine-tuning', 'Hugging Face Transformers'] },
+  { group: 'Machine learning', items: ['XGBoost', 'LightGBM', 'SHAP and explainable AI', 'Forecasting', 'Imbalanced learning (SMOTE)', 'Threshold optimization', 'Feature engineering'] },
+  { group: 'Palantir platform', items: ['Foundry', 'AIP and AIP Agent Studio', 'Ontology modeling', 'Pipeline Builder', 'Workshop', 'OSDK (React)', 'Apollo'] },
+  { group: 'Data engineering', items: ['PySpark', 'cuDF', 'Apache Kafka', 'Apache Airflow', 'Feast feature store', 'Snowflake', 'SAP ERP, WMS, TMS integration'] },
+  { group: 'MLOps and infrastructure', items: ['MLflow', 'FastAPI', 'Docker', 'Kubernetes', 'Redis', 'Terraform', 'CI/CD', 'Drift detection (Evidently, PSI)', 'Prometheus and Grafana'] },
+  { group: 'Cloud, optimization, languages', items: ['AWS (SageMaker, EKS, EMR, S3)', 'NVIDIA cuOpt', 'Python', 'SQL', 'TypeScript'] },
 ];
 
 export const education = [

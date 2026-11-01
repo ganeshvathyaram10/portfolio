@@ -3,10 +3,16 @@ import { profile, experience, featuredProject, projects, skills, education } fro
 
 export const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-const STOP = new Set('a an the and or of to in on for with is are was were be by at as from what which who whom how does do did has have he his him i me my about any this that it its can tell show list where when there you your done work use used using any some'.split(' '));
+const STOP = new Set('a an the and or of to in on for with is are was were be by at as from what which who whom how does do did has have he his him i me my about any this that it its can tell show list where when there you your done work use used using any some experience built build know'.split(' '));
 
 const SYNONYMS = {
   rag: ['retrieval', 'citations', 'reranks'],
+  agent: ['multi-agent', 'langgraph', 'agentic', 'mcp'],
+  'multi-agent': ['langgraph', 'agent', 'mcp'],
+  agentic: ['multi-agent', 'langgraph'],
+  mlops: ['mlflow', 'ci/cd', 'monitoring', 'drift', 'rollback'],
+  fraud: ['transactions', 'precision', 'recall'],
+  palantir: ['foundry', 'aip'],
   retrieval: ['rag'],
   llm: ['llms', 'language', 'rag'],
   ai: ['llms', 'machine', 'learning'],
@@ -44,6 +50,7 @@ function tokens(text) {
     .split(/[^a-z0-9.+-]+/)
     .map(t => t.replace(/^[.-]+|[.-]+$/g, ''))
     .filter(t => t && !STOP.has(t))
+    .flatMap(t => (t.includes('-') ? [t, ...t.split('-').filter(Boolean)] : [t]))
     .map(t => (t.length > 4 && t.endsWith('s') && !t.endsWith('ss') ? t.slice(0, -1) : t));
 }
 
@@ -62,15 +69,13 @@ function buildDocs() {
     text: experience.map(j => `${j.role} at ${j.company}, ${j.location} (${j.dates})`).join('. ') + '.',
     kw: 'work worked experience experience job jobs employer companies company career engineer',
   });
-  experience.forEach(j =>
-    docs.push({
-      id: `job-${slug(j.company)}`,
-      section: 'Experience',
-      title: `${j.role} at ${j.company}`,
-      text: `${j.role}, ${j.company}, ${j.location}, ${j.dates}. ${j.highlights.join(' ')}`.trim(),
-      kw: 'work experience job'
-    })
-  );
+  experience.forEach(j => {
+    const id = `job-${slug(j.company)}`;
+    const title = `${j.role} at ${j.company}`;
+    docs.push({ id, section: 'Experience', title, text: `${j.role}, ${j.company}, ${j.location}, ${j.dates}.`, kw: 'work experience job' });
+    // One passage per highlight, so a question matches the specific accomplishment.
+    j.highlights.forEach(h => docs.push({ id, section: `Experience at ${j.company}`, title, text: h, kw: j.company }));
+  });
   docs.push({
     id: `project-${slug(featuredProject.title)}`,
     section: 'Projects',
@@ -125,7 +130,7 @@ export function search(query, k = 3) {
     weights[t] = Math.max(weights[t] || 0, 1);
     (SYNONYMS[t] || []).forEach(s => tokens(s).forEach(x => { weights[x] = Math.max(weights[x] || 0, 0.6); }));
   });
-  const k1 = 1.4, b = 0.75;
+  const k1 = 1.4, b = 0.5;
   const scored = DOCS.map((d, idx) => {
     const tf = {};
     d.toks.forEach(t => { tf[t] = (tf[t] || 0) + 1; });
@@ -135,6 +140,8 @@ export function search(query, k = 3) {
       const idf = Math.log(1 + (N - DF[t] + 0.5) / (DF[t] + 0.5));
       score += w * idf * (tf[t] * (k1 + 1)) / (tf[t] + k1 * (1 - b + b * d.toks.length / AVGDL));
     });
+    if (d.id === 'top') score *= 0.6;
+    if (d.section === 'Skills') score *= 0.8; // skill lists are weaker evidence than work done // the general summary should not outrank specific evidence
     if (score > 0) score += 0.001 * (N - idx); // tie-break: earlier (more recent) items first
     return { ...d, score };
   })

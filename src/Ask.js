@@ -3,9 +3,9 @@ import { search } from './search';
 import { profile } from './content';
 
 const SUGGESTIONS = [
-  'What RAG work have you done?',
-  'Where have you worked?',
-  'Which projects use FastAPI?',
+  'What have you built at Palantir?',
+  'What fraud detection work have you done?',
+  'Have you built multi-agent systems?',
   'How do I contact you?',
 ];
 
@@ -54,7 +54,7 @@ export default function Ask({ onBeforeReveal }) {
             className="ask-input"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="For example: which projects use LLMs?"
+            placeholder="For example: what MLOps experience do you have?"
             autoComplete="off"
           />
           <button className="btn btn-primary" type="submit">Ask</button>
